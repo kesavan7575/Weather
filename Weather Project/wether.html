@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+-<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="wether.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="wether.js">
+         
+</head>
+<body>
+    <div class="container">
+        <div class="search-box">
+            <i class='bx bxs-map'></i>
+            <input type="text" placeholder="Enter Your Location">
+            <button class='bx bx-search'></button>
+        </div>
+        
+        <div class="weather-box">
+            <div class="box">
+                <div class="info-weather">
+                     <div class="weather">
+                        <img src="image/wether/cloud.png">
+                        <p class="temperature">0<span>&deg;C</span></p>
+                        <p class="description">Broken Clouds</p>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weather-detials">
+            <div class="humidity">
+                <i class='bx bx-water'></i>
+                <div class="humi">
+                    <div class="info-humidity">
+                        <span>0%</span>
+                    </div>
+                    <p>Humidity</p>
+                </div>
+            </div>
+
+            <div class="wind">
+                <i class="bx bx-wind"></i>
+                <div class="win">
+                    <div class="info-wind">
+                        <span>0Km/h</span>
+                    </div>
+                    <p>Wind Speed</p>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+<script>
+       const api="e27838cdffe46c4b515128c5394c6d93";
+       const apiurl="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+        const searchbox=document.querySelector(".search-box input");
+        const searchbtn=document.querySelector(".search-box button");
+        const weatherIcon=document.querySelector(".weather img")
+
+     async function cheackweather(city){
+       const response = await fetch(apiurl+city+`&appid=${api}`);
+       var data = await response.json();
+
+     console.log(data);
+
+     document.querySelector(".description").innerHTML=data.name;
+     document.querySelector(".temperature").innerHTML=Math.round(data.main.temp)+"°C";
+     document.querySelector(".humi span").innerHTML=data.main.humidity+"%";
+     document.querySelector(".win span").innerHTML=data.wind.speed+"km/h";
+
+     if(data.weather[0].main == "Clouds") {
+        weatherIcon.src="image/wether/cloud.png";
+     }
+     else if(data.weather[0].main=="Clear") {
+        weatherIcon.src="image/wether/clear.png";
+     }
+     else if(data.weather[0].main=="Rain") {
+        weatherIcon.src="image/wether/rain.png";
+     }
+     else if(data.weather[0].main=="Drizzle") {
+        weatherIcon.src="image/wether/snow.png";
+     }
+     else if(data.weather[0].main=="Mist") {
+        weatherIcon.src="image/wether/mist.png";
+     } 
+     }
+
+     searchbtn.addEventListener("click", ()=>{
+     cheackweather(searchbox.value);
+     })
+</script>
+</body>
+</html>
